@@ -5,7 +5,7 @@
     "url": "http://tomasz.janczuk.org",
     "twitter": "tjanczuk"
   },
-  "version": "0.10.2-pre",
+  "version": "0.11.1",
   "description": "Electron-Edge.js: run .NET and Node.js in-process in Electron",
   "tags": [
     "owin",
@@ -28,23 +28,23 @@
     }
   ],
   "dependencies": {
-    "edge-cs": "0.2.7",
-    "nan": "^1.6.2"
+    "edge-cs": "0.2.7"
   },
   "devDependencies": {
+    "jshint": "1.1.0",
     "mocha": "1.8.1",
-    "jshint": "1.1.0"
+    "nan": "^1.9.0"
   },
-  "homepage": "https://github.com/kexplo/electron-edge",
+  "homepage": "https://github.com/palsmadal/electron-edge",
   "repository": {
     "type": "git",
-    "url": "git@github.com:kexplo/electron-edge.git"
+    "url": "git@github.com:palsmadal/electron-edge.git"
   },
   "bugs": {
-    "url": "http://github.com/kexplo/electron-edge/issues"
+    "url": "http://github.com/palsmadal/electron-edge/issues"
   },
   "scripts": {
-    "install": "node tools/install.js",
+	"install": "node tools/install.js",
     "test": "node tools/test.js",
     "jshint": "node ./tools/runJsHint.js"
   }

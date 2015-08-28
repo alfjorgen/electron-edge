@@ -1,7 +1,7 @@
 @echo off
 set SELF=%~dp0
 if "%1" equ "" (
-    echo Usage: build.bat debug^|release "{version} {version}" ...
+    echo Usage: build.bat debug^|release "{electron version} {io.js version}" ...
     echo e.g. build.bat release "0.8.22 0.10.0"
     exit /b -1
 )
