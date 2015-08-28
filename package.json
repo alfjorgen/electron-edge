@@ -28,12 +28,12 @@
     }
   ],
   "dependencies": {
-    "edge-cs": "0.2.7"
+    "edge-cs": "0.2.7",
+	"nan": "^1.9.0"
   },
   "devDependencies": {
     "jshint": "1.1.0",
-    "mocha": "1.8.1",
-    "nan": "^1.9.0"
+    "mocha": "1.8.1"
   },
   "homepage": "https://github.com/palsmadal/electron-edge",
   "repository": {
