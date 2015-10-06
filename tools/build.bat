@@ -1,7 +1,7 @@
 @echo off
 set SELF=%~dp0
 if "%1" equ "" (
-    echo Usage: build.bat debug^|release "{electron version} {io.js version}" ...
+    echo Usage: build.bat debug^|release "{version} {version}" ...
     echo e.g. build.bat release "0.8.22 0.10.0"
     exit /b -1
 )
@@ -54,7 +54,7 @@ if not exist "%GYP%" (
     exit /b -1
 )
 
-"%NODEEXE%" "%GYP%" configure build --target=0.30.4 --dist-url=https://atom.io/download/atom-shell --msvs_version=2013 -%FLAVOR%
+"%NODEEXE%" "%GYP%" configure build --target=0.33.6 --dist-url=https://atom.io/download/atom-shell --msvs_version=2015 -%FLAVOR%
 if %ERRORLEVEL% neq 0 (
     echo Error building edge.node %FLAVOR% for node.js %2 v%3
     exit /b -1
