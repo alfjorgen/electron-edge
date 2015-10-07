@@ -9,9 +9,9 @@ if "%1" equ "" (
 SET FLAVOR=%1
 shift
 if "%FLAVOR%" equ "" set FLAVOR=release
-for %%i in (iojs.exe) do set NODEEXE=%%~$PATH:i
+for %%i in (node.exe) do set NODEEXE=%%~$PATH:i
 if not exist "%NODEEXE%" (
-    echo Cannot find iojs.exe
+    echo Cannot find node.exe
     popd
     exit /b -1
 )
@@ -25,45 +25,53 @@ if "%1" neq "" (
     goto :harvestVersions
 )
 if "%VERSIONS%" equ "" set VERSIONS=0.10.0
-pushd %SELF%\..
-for %%V in (%VERSIONS%) do call :build ia32 x86 %%V 
-for %%V in (%VERSIONS%) do call :build x64 x64 %%V 
-popd
 
+pushd %SELF%\..
+for %%V in (%VERSIONS%) do (
+	if "%%V" equ "4.1.1" (
+		set ELECTRONTARGET=0.33.6
+	) else (
+		set ELECTRONTARGET = 
+	)
+	call :build ia32 x86 %%V %ELECTRONTARGET%
+	call :build x64 x64 %%V %ELECTRONTARGET%
+) 
+
+popd
 exit /b 0
 
 :build
 
 set DESTDIR=%DESTDIRROOT%\%1\%3
-if exist "%DESTDIR%\iojs.exe" goto gyp
+if exist "%DESTDIR%\node.exe" goto gyp
 if not exist "%DESTDIR%\NUL" mkdir "%DESTDIR%"
-echo Downloading iojs.exe %2 %3...
-iojs %SELF%\download.js %2 %3 "%DESTDIR%"
+echo Downloading node.exe %2 %3...
+node %SELF%\download.js %2 %3 "%DESTDIR%"
 if %ERRORLEVEL% neq 0 (
-    echo Cannot download iojs.exe %2 v%3
+    echo Cannot download node.exe %2 v%3 and electron v%4
     exit /b -1
 )
 
 :gyp
 
-echo Building edge.node %FLAVOR% for io.js %2 v%3
-set NODEEXE=%DESTDIR%\iojs.exe
+echo Building edge.node %FLAVOR% for node %2 v%3 and electron v%4
+set NODEEXE=%DESTDIR%\node.exe
 set GYP=%APPDATA%\npm\node_modules\pangyp\bin\node-gyp.js
 if not exist "%GYP%" (
     echo Cannot find pangyp at %GYP%. Make sure to install with npm install pangyp -g
     exit /b -1
 )
 
-"%NODEEXE%" "%GYP%" configure build --target=0.33.6 --dist-url=https://atom.io/download/atom-shell --msvs_version=2015 -%FLAVOR%
+"%NODEEXE%" "%GYP%" configure build --target=%4 --dist-url=https://atom.io/download/atom-shell/ --msvs_version=2013 -%FLAVOR%
 if %ERRORLEVEL% neq 0 (
-    echo Error building edge.node %FLAVOR% for node.js %2 v%3
+    echo Error building edge.node %FLAVOR% for node.js %2 v%3 and electron v%4
     exit /b -1
 )
 
 echo %DESTDIR%
 copy /y .\build\%FLAVOR%\edge.node "%DESTDIR%"
 if %ERRORLEVEL% neq 0 (
-    echo Error copying edge.node %FLAVOR% for node.js %2 v%3
+    echo Error copying edge.node %FLAVOR% for node.js %2 v%3 and electron v%4
     exit /b -1
 )
 
@@ -73,4 +81,4 @@ if %ERRORLEVEL% neq 0 (
     exit /b -1
 )
 
-echo Success building edge.node %FLAVOR% for node.js %2 v%3
+echo Success building edge.node %FLAVOR% for node.js %2 v%3 and electron v%4
